@@ -32,7 +32,7 @@ jumpstart_z() {
 
   local line
   for line in $lines; do
-    local weight_field=${line%[[:blank:]]*}
+    local weight_field=${line%%[[:blank:]]*}
     local path_field=${line#*[[:blank:]]}
 
     print "$path_field|${weight_field%[[:punct:]]*}|$now"
