@@ -1,0 +1,22 @@
+#! /usr/bin/env zsh
+
+(( $+EPOCHSECONDS )) || zmodload zsh/datetime
+
+jumpstart_z() {
+  local autojump_datafile=$1
+  local now=$EPOCHSECONDS
+
+  local lines=( ${(f)"$(< $autojump_datafile)"} )
+
+  local line
+  for line in $lines; do
+    local weight_field=${line%[[:blank:]]*}
+    local path_field=${line#*[[:blank:]]}
+
+    print "$path_field|${weight_field%[[:punct:]]*}|$now"
+  done
+}
+
+jumpstart_z "$@"
+
+# vim: ts=2:sts=2:sw=2:et:
