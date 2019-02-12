@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#!/bin/sh
 
 # MIT License
 
@@ -22,21 +22,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-(( $+EPOCHSECONDS )) || zmodload zsh/datetime
-
 jumpstart_z() {
-  local autojump_datafile=$1
-  local now=$EPOCHSECONDS
-
-  local lines=( ${(f)"$(< $autojump_datafile)"} )
-
-  local line
-  for line in $lines; do
-    local weight_field=${line%%[[:blank:]]*}
-    local path_field=${line#*[[:blank:]]}
-
-    print "$path_field|${weight_field%[[:punct:]]*}|$now"
+  for JZ_AWK_FLAVOR in mawk gawk original-awk nawk awk; do
+	  command -v $JZ_AWK_FLAVOR > /dev/null 2>&1 && JZ_AWK=$JZ_AWK_FLAVOR && break
   done
+
+  $JZ_AWK -F "\t" -v now="$(date +%s)" '
+    { printf("%s|%0.f|%s\n", $2, $1, now) }
+  ' < "$1"
 }
 
 jumpstart_z "$@"
