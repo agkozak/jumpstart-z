@@ -1,4 +1,4 @@
-# jumpstart-z - convert `autojump` database into `z` database
+# jumpstart-z - convert an `autojump` database into a `z` database
 
 Example command (this will overwrite your `z` database!):
 
