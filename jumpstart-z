@@ -23,13 +23,7 @@
 # SOFTWARE.
 
 jumpstart_z() {
-  for JZ_AWK in mawk gawk original-awk nawk awk; do
-	  command -v $JZ_AWK > /dev/null 2>&1 && break
-  done
-
-  $JZ_AWK -F "\t" -v now="$(date +%s)" '
-    { printf("%s|%0.f|%s\n", $2, $1, now) }
-  ' < "$1"
+  awk -F "\t" '{printf("%s|%0.f|%s\n", $2, $1, '"$(date +%s)"')}' < "$1"
 }
 
 jumpstart_z "$@"
